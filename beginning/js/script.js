@@ -80,7 +80,6 @@ function buildGrid(arrEmployees) {
             // REBUILDING THE ROW STRUCTURE
             for (let employee of data.employees) {
                 tbody.innerHTML += 
-                
                 `
                 <tr>
                     <td>${employee.id}</td>

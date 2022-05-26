@@ -1,24 +1,13 @@
 
-//test
-let arrEmployees = []
-
-
-//orig
-// CREATE AN ARRAY OF EMPLOYEES
-// let arrEmployees = [
-//     [34123413, "Zak Ruvalcaba", 3424, "zak@vectacorp.com", "Executive"],
-//     [23424665, "Sally Smith", 2344, "sally@vectacorp.com", "Administrative"],
-//     [12341244, "Mark Martin", 5352, "mark@vectacorp.com", "Sales"],
-//     [14545423, "Robin Banks", 7867, "robin@vectacorp.com", "Marketing"],
-//     [13413453, "Sue Wedge", 1235, "sue@vectacorp.com", "QA"]
-// ];
+//IMPORT THE MODULE
+import * as employees from './modules/init.js'
 
 // GET DOM ELEMENTS
 let empTable    = document.querySelector('#employees');
 let empCount    = document.querySelector('#empCount');
 
 // BUILD THE EMPLOYEES TABLE WHEN THE PAGE LOADS
-buildGrid(arrEmployees);
+buildGrid();
 
 // DELETE EMPLOYEE
 empTable.addEventListener('click', (e) => {
@@ -34,51 +23,18 @@ empTable.addEventListener('click', (e) => {
 });
 
 
-//orig
-// // BUILD THE EMPLOYEES GRID
-// function buildGrid(arrEmployees) {
-//     // REMOVE THE EXISTING SET OF ROWS BY REMOVING THE ENTIRE TBODY SECTION
-//     empTable.lastElementChild.remove();
-//     // REBUILD THE TBODY FROM SCRATCH
-//     let tbody = document.createElement('tbody');
-//     // LOOP THROUGH THE ARRAY OF EMPLOYEES
-//     // REBUILDING THE ROW STRUCTURE
-//     for (let employee of arrEmployees) {
-//         tbody.innerHTML += 
-//         `
-//         <tr>
-//             <td>${employee[0]}</td>
-//             <td>${employee[1]}</td>
-//             <td>${employee[2]}</td>
-//             <td><a href="mailto:${employee[3]}">${employee[3]}</a></td>
-//             <td>${employee[4]}</td>
-//             <td><button class="btn btn-sm btn-danger delete">X</button></td>
-//         </tr>
-//         `
-//     }
-//     // BIND THE TBODY TO THE EMPLOYEE TABLE
-//     empTable.appendChild(tbody);
-//     // UPDATE EMPLOYEE COUNT
-//     empCount.value = `(${arrEmployees.length})`;
-// };
-
-
-
-//test
 // BUILD THE EMPLOYEES GRID
-function buildGrid(arrEmployees) {
+function buildGrid() {
     // REMOVE THE EXISTING SET OF ROWS BY REMOVING THE ENTIRE TBODY SECTION
     empTable.lastElementChild.remove();
     // REBUILD THE TBODY FROM SCRATCH
     let tbody = document.createElement('tbody');
 
     //FETCH JSON DATA (USING PROMISES)
-    fetch('../beginning/data/employees.json')
-        .then(response => response.json())
-        .then(data => {
-            // LOOP THROUGH THE ARRAY OF EMPLOYEES
-            // REBUILDING THE ROW STRUCTURE
-            for (let employee of data.employees) {
+    // LOOP THROUGH THE ARRAY OF EMPLOYEES
+    // REBUILDING THE ROW STRUCTURE
+    employees.fetchEmployees().then((data) => {
+            for (let employee of data) {
                 tbody.innerHTML += 
                 `
                 <tr>
@@ -91,11 +47,15 @@ function buildGrid(arrEmployees) {
                 </tr>
                 `
             }
+            // UPDATE EMPLOYEE COUNT
+            empCount.value = `(${data.length})`;
         })
-        .catch( e => console.log(e.message))
 
     // BIND THE TBODY TO THE EMPLOYEE TABLE
     empTable.appendChild(tbody);
-    // UPDATE EMPLOYEE COUNT
-    empCount.value = `(${arrEmployees.length})`;
+
 };
+
+
+
+
